@@ -5,8 +5,6 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
 
-    public float screenWidth;
-    public float screenHeight;
     public float speed=5f;
 
     Rigidbody2D rb;
@@ -20,8 +18,12 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        bool rightInput = Input.GetKey(KeyCode.RightArrow);
-        bool leftInput = Input.GetKey(KeyCode.LeftArrow);
+        /*bool rightInput = Input.GetKey(KeyCode.RightArrow);
+        bool leftInput = Input.GetKey(KeyCode.LeftArrow);*/
+
+        Touch touch = Input.GetTouch(0);
+        bool rightInput = touch.position.x < Screen.width / 2;
+        bool leftInput = touch.position.x > Screen.width / 2;
 
         float direction = (rightInput ? 1f : 0f) - (leftInput ? 1f : 0f);
 
