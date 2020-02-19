@@ -18,12 +18,25 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*bool rightInput = Input.GetKey(KeyCode.RightArrow);
-        bool leftInput = Input.GetKey(KeyCode.LeftArrow);*/
+        bool rightInput;
+        bool leftInput;
 
-        Touch touch = Input.GetTouch(0);
-        bool rightInput = touch.position.x < Screen.width / 2;
-        bool leftInput = touch.position.x > Screen.width / 2;
+        /*rightInput = Input.GetKey(KeyCode.RightArrow);
+        leftInput = Input.GetKey(KeyCode.LeftArrow);*/
+
+
+        
+        if (Input.touches.Length != 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            rightInput = touch.position.x > Screen.width / 2;
+            leftInput = touch.position.x < Screen.width / 2;
+        }
+        else
+        {
+            rightInput = false;
+            leftInput = false;
+        }
 
         float direction = (rightInput ? 1f : 0f) - (leftInput ? 1f : 0f);
 
