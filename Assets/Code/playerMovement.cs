@@ -6,7 +6,9 @@ public class playerMovement : MonoBehaviour
 {
 
     public float speed=5f;
-
+    public bool onCircle=false;
+    public bool onPlanet=false;
+    // public bool
     Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -41,6 +43,7 @@ public class playerMovement : MonoBehaviour
         float direction = (rightInput ? 1f : 0f) - (leftInput ? 1f : 0f);
 
         rb.velocity = direction * transform.right * speed * Time.fixedDeltaTime;
+
         if (rightInput)
         {
             RaycastHit2D wallDetectRight = Physics2D.Raycast(transform.position, transform.right, 1f);
@@ -61,4 +64,21 @@ public class playerMovement : MonoBehaviour
         }
 
     }
+
+ void OnCollisionEnter(Collision hit){
+     if (hit.gameObject.tag=="planet"){
+         onPlanet=true;
+     }
+     if (hit.gameObject.tag=="okvir"){
+         onPlanet=true;
+     }
+ }
+ void OnCollisionExit(Collision hit){
+     if (hit.gameObject.tag=="planet"){
+         onPlanet=false;
+     }
+     if (hit.gameObject.tag=="okvir"){
+         onPlanet=false;
+     }
+ }
 }
