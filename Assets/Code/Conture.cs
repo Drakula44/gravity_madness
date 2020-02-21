@@ -4,40 +4,74 @@ using UnityEngine;
 
 public class Conture : MonoBehaviour
 {
-    public  static Conture[] contures = new Conture[8];
-    public int id = 0;
-    public int type;
-    public float x=0;
-    public float y=0;
-    public float r=4;
-    public float angle=Mathf.PI/2;
-    public float ix = 1;
-    public float iy = 1;
-    public float conX;
-    public float conY;
 
-    void Start()
+    public static float a = 8.2F;
+    public static float b = 15;
+    public static float angle = Mathf.PI/2;
+    public static float r = 3.75F;
+
+    static float f(float x)
     {
-        contures[id] = this;
-        if(type == 1)
-        {
-            x =  transform.position.x;
-            y =  transform.position.y;
-        }
+        return (Mathf.Sign(x)+1)/2;
     }
-    Vector2 Evaulate(float t)
+    public static Vector2 Evaulate(float t)
     {
-        float nx = 0;
-        float ny = 0;
-        if(type == 1)
-        {
-            nx = ix * (x + r*Mathf.Sin(t/100*angle));
-            ny = iy * (y + r*Mathf.Cos(t/100*angle));
-        }
-        else if(type == 0)
+        int deo = (int)t/100;
+        float tx = 0;
+        float ty = 0;
+        float h = b + r*Mathf.Sin(angle-Mathf.PI/2);
+        float g = a + r*Mathf.Sin(angle-Mathf.PI/2);
+        float l = r*Mathf.Sin(angle);
+        t = t - deo*100;
+        if(deo % 2 == 1)
         {
 
+            t = t/100*(h+g-2*l);
+            if(deo %4 == 1)
+            t = t+(-h+l);
+            else {
+                t = t+(-g+l);
+            }
+
         }
-        return new Vector2(nx,ny);
+        else {
+            t = t/100*(2*angle)-angle;
+        }
+        switch (deo) {
+            case 0:
+                tx = r*Mathf.Sin(t);
+                ty = r*Mathf.Cos(t)-a;
+                break;
+            case 1:
+                tx = f(-t)*t+h;
+                ty = f(t)*t-g;
+                break;
+            case 2:
+                tx = -r*Mathf.Cos(t)+b;
+                ty = r*Mathf.Sin(t);
+                break;
+            case 3:
+                tx = -f(t)*t+h;
+                ty = f(-t)*t+g;
+                break;
+            case 4:
+                tx = r*Mathf.Sin(-t);
+                ty = -r*Mathf.Cos(t)+a;
+                break;
+            case 5:
+                tx = -f(-t)*t-h;
+                ty = -f(t)*t+g;
+                break;
+            case 6:
+                tx = r*Mathf.Cos(t)-b;
+                ty = r*Mathf.Sin(-t);
+                break;
+            case 7:
+                tx = f(t)*t - h;
+                ty = -f(-t)*t - g;
+                break;
+        }
+        return new Vector2(tx,ty);
     }
+
 }

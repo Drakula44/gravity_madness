@@ -6,8 +6,7 @@ public class playerMovement : MonoBehaviour
 {
 
     public float speed=5f;
-    public bool onCircle=false;
-    public bool onPlanet=false;
+    public float relative_position = 0;
     // public bool
     Rigidbody2D rb;
 
@@ -42,43 +41,25 @@ public class playerMovement : MonoBehaviour
 
         float direction = (rightInput ? 1f : 0f) - (leftInput ? 1f : 0f);
 
-        rb.velocity = direction * transform.right * speed * Time.fixedDeltaTime;
-
         if (rightInput)
         {
-            RaycastHit2D wallDetectRight = Physics2D.Raycast(transform.position, transform.right, 1f);
-
-            if (wallDetectRight && wallDetectRight.collider.gameObject.name == "Environment")
-            {
-                transform.Rotate(new Vector3(0, 0, 90), Space.Self);
-            }
+            relative_position += 1F;
         }
         if (leftInput)
         {
-            RaycastHit2D wallDetectLeft = Physics2D.Raycast(transform.position, -transform.right, 1f);
-
-            if (wallDetectLeft && wallDetectLeft.collider.gameObject.name == "Environment")
-            {
-                transform.Rotate(new Vector3(0, 0, -90), Space.Self);
-            }
+            relative_position -= 1F;
         }
-
+        if(relative_position >= 800)
+        {
+            relative_position -= 800;
+        }
+        if(relative_position < 0)
+        {
+            relative_position += 800;
+        }
+        Vector2 pos = Conture.Evaulate(relative_position);
+        transform.position = pos;
+        // Debug.Log(pos);
     }
 
- void OnCollisionEnter(Collision hit){
-     if (hit.gameObject.tag=="planet"){
-         onPlanet=true;
-     }
-     if (hit.gameObject.tag=="okvir"){
-         onPlanet=true;
-     }
- }
- void OnCollisionExit(Collision hit){
-     if (hit.gameObject.tag=="planet"){
-         onPlanet=false;
-     }
-     if (hit.gameObject.tag=="okvir"){
-         onPlanet=false;
-     }
- }
 }
